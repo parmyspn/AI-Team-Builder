@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import PublicPage from './pages/PublicPage';
+import PublicPage from "./pages/PublicPage";
 // import LoginPage from './pages/LoginPage';
 // import AdminPage from './pages/AdminHomePage';
 // import MemberPage from './pages/MemberHomePage';
@@ -15,10 +15,11 @@ import PublicPage from './pages/PublicPage';
 // import NotificationPage from "../pages/notifications";
 // import { ForgotPassword } from "../pages/resetPassword";
 // import Website from "../pages/website";
-import { NothingFoundBackground } from './pages/NothingFound';
-import { AuthProvider } from './utils/auth';
-import { AuthenticationForm } from './pages/LoginPage';
-import { HomePage } from './pages/HomePage';
+import { NothingFoundBackground } from "./pages/NothingFound";
+import { AuthProvider } from "./utils/auth";
+import { AuthenticationForm } from "./pages/LoginPage";
+import { HomePage } from "./pages/HomePage";
+import { Coordinator } from "./pages/Coordinator";
 export default function AllRoutes() {
   return (
     <AuthProvider>
@@ -28,6 +29,7 @@ export default function AllRoutes() {
           <Route path="*" element={<NothingFoundBackground />} />
           <Route path="/login" element={<AuthenticationForm />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/coordinator" element={<Coordinator />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
