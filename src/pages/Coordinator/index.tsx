@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { LoggedHeader } from "../../components/LoggedHeader";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
@@ -208,6 +209,8 @@ function Submit({ onSubmit }: { onSubmit: () => void }) {
 }
 
 export function Coordinator() {
+  // Inside your component, set up the useNavigate hook
+  const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       classDetails: {
@@ -227,9 +230,13 @@ export function Coordinator() {
         question: item.question,
       })),
     };
+    const response = await createClass(data); // Assuming this returns the created class data
 
-    // Send POST request
-    await createClass(data); // Make sure you implement this in your utils
+    // Assuming the class ID is in the response, for example: response.classId
+    const classId = response.classId;
+
+    // Use useNavigate to reroute to the class details page
+    navigate(`/classview/${classId}`); // Replace `/class/${classId}` with your actual
   };
 
   return (
