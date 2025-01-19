@@ -6,6 +6,7 @@ import {
   ActionIcon,
   Box,
   Text,
+  useMantineTheme,
   Button,
   Fieldset,
 } from "@mantine/core";
@@ -13,6 +14,9 @@ import { randomId } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons-react";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { useRef } from "react";
+import { IconCloudUpload, IconDownload } from "@tabler/icons-react";
+import classes from "./styles.module.css";
 
 function Question() {
   const form = useForm({
@@ -38,8 +42,8 @@ function Question() {
         placeholder="Enter your question"
         withAsterisk
         style={{ flex: 1, maxWidth: "500px" }}
-        key={form.key(`questionnaire.${index}.question`)}
-        {...form.getInputProps(`questionnaire.${index}.question`)}
+        key={form.key(`questionnaire.${index}.question`)} // Fix: backticks here
+        {...form.getInputProps(`questionnaire.${index}.question`)} // Fix: backticks here
       />
       <ActionIcon
         color="red"
@@ -52,7 +56,7 @@ function Question() {
 
   return (
     <Box maw={500} mx="auto">
-      <Text size="xl" fw={700} mb="md"  pt="xl">
+      <Text size="xl" fw={700} mb="md" pt="xl">
         Question List
       </Text>
 
@@ -100,49 +104,63 @@ function ClassDetails() {
   );
 }
 
-export function FileUpload(props: Partial<DropzoneProps>) {
-  return (
-    <Dropzone
-      onDrop={(files) => console.log("accepted files", files)}
-      onReject={(files) => console.log("rejected files", files)}
-      maxSize={5 * 1024 ** 2}
-      accept={IMAGE_MIME_TYPE}
-      {...props}
-    >
-      <Group
-        justify="center"
-        gap="xl"
-        mih={120}
-        style={{ pointerEvents: "none" }}
-      >
-        <Dropzone.Accept>
-          <IconUpload
-            size={52}
-            color="var(--mantine-color-blue-6)"
-            stroke={1.5}
-          />
-        </Dropzone.Accept>
-        <Dropzone.Reject>
-          <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
-        </Dropzone.Reject>
-        <Dropzone.Idle>
-          <IconPhoto
-            size={52}
-            color="var(--mantine-color-dimmed)"
-            stroke={1.5}
-          />
-        </Dropzone.Idle>
+export function FileUpload() {
+  const theme = useMantineTheme();
+  const openRef = useRef<() => void>(null);
 
-        <div>
-          <Text size="xl" inline>
-            Drag images here or click to select files
+  return (
+    <div className={classes.wrapper}>
+      <Dropzone
+        openRef={openRef}
+        onDrop={() => {}}
+        className={classes.dropzone}
+        radius="md"
+        maxSize={5 * 1024 ** 2}
+        accept={[
+          "text/csv",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        ]}
+      >
+        <div style={{ pointerEvents: "none" }}>
+          <Group justify="center">
+            <Dropzone.Accept>
+              <IconDownload
+                size={50}
+                color={theme.colors.blue[6]}
+                stroke={1.5}
+              />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <IconX size={50} color={theme.colors.red[6]} stroke={1.5} />
+            </Dropzone.Reject>
+            <Dropzone.Idle>
+              <IconCloudUpload size={50} stroke={1.5} />
+            </Dropzone.Idle>
+          </Group>
+
+          <Text ta="center" fw={700} fz="lg" mt="xl">
+            <Dropzone.Accept>Drop files here</Dropzone.Accept>
+            <Dropzone.Reject>
+              List of student file less than 5mb
+            </Dropzone.Reject>
+            <Dropzone.Idle>Upload list of students</Dropzone.Idle>
           </Text>
-          <Text size="sm" c="dimmed" inline mt={7}>
-            Attach as many files as you like, each file should not exceed 5mb
+          <Text ta="center" fz="sm" mt="xs" c="dimmed">
+            Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
+            <i>.csv or excel file</i> files that are less than 5mb in size.
           </Text>
         </div>
-      </Group>
-    </Dropzone>
+      </Dropzone>
+
+      <Button
+        className={classes.control}
+        size="md"
+        radius="xl"
+        onClick={() => openRef.current?.()}
+      >
+        Select files
+      </Button>
+    </div>
   );
 }
 
@@ -168,10 +186,6 @@ export function Coordinator() {
       <Box maw={500} mx="auto" mt="xl">
         <Text size="xl" fw={700} mb="md">
           Upload Your Class List (Excel, CSV,...)
-        </Text>
-        <Text size="sm" c="dimmed" mb="lg">
-          Please upload images that are related to your questionnaire or any
-          other relevant content.
         </Text>
       </Box>
       <Box
