@@ -1,22 +1,25 @@
 import { LoggedHeader } from "../../components/LoggedHeader";
 import { useForm } from "@mantine/form";
+import { useState } from "react";
 import {
   TextInput,
   Group,
   ActionIcon,
   Box,
   Text,
-  useMantineTheme,
   Button,
-  Fieldset,
+  useMantineTheme,
 } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
-import { IconTrash } from "@tabler/icons-react";
-import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import IconTrash from "../../assets/icons/trash.svg";
+import IconCloudUpload from "../../assets/icons/cloud-upload.svg";
+import IconX from "../../assets/icons/x.svg";
+import IconDownload from "../../assets/icons/download.svg";
+
+import { Dropzone } from "@mantine/dropzone";
 import { useRef } from "react";
-import { IconCloudUpload, IconDownload } from "@tabler/icons-react";
 import classes from "./styles.module.css";
+import { createClass } from "../../utils/api"; // Assuming this function exists in your utils folder.
 
 function Question() {
   const form = useForm({
@@ -42,14 +45,18 @@ function Question() {
         placeholder="Enter your question"
         withAsterisk
         style={{ flex: 1, maxWidth: "500px" }}
-        key={form.key(`questionnaire.${index}.question`)} // Fix: backticks here
-        {...form.getInputProps(`questionnaire.${index}.question`)} // Fix: backticks here
+        key={form.key(`questionnaire.${index}.question`)}
+        {...form.getInputProps(`questionnaire.${index}.question`)}
       />
       <ActionIcon
         color="red"
         onClick={() => form.removeListItem("questionnaire", index)}
       >
-        <IconTrash size={16} />
+        <img
+          src={IconTrash}
+          alt="trash"
+          style={{ width: "16px", height: "16px" }}
+        />
       </ActionIcon>
     </Group>
   ));
@@ -107,12 +114,17 @@ function ClassDetails() {
 export function FileUpload() {
   const theme = useMantineTheme();
   const openRef = useRef<() => void>(null);
+  const [files, setFiles] = useState<File[]>([]); // Add state to store files
+
+  const handleDrop = (droppedFiles: File[]) => {
+    setFiles(droppedFiles); // Store dropped files in the state
+  };
 
   return (
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={() => {}}
+        onDrop={handleDrop}
         className={classes.dropzone}
         radius="md"
         maxSize={5 * 1024 ** 2}
@@ -124,17 +136,19 @@ export function FileUpload() {
         <div style={{ pointerEvents: "none" }}>
           <Group justify="center">
             <Dropzone.Accept>
-              <IconDownload
-                size={50}
-                color={theme.colors.blue[6]}
-                stroke={1.5}
+              <img
+                src={IconDownload}
+                style={{ width: "50px", height: "50px" }}
               />
             </Dropzone.Accept>
             <Dropzone.Reject>
-              <IconX size={50} color={theme.colors.red[6]} stroke={1.5} />
+              <img src={IconX} style={{ width: "50px", height: "50px" }} />
             </Dropzone.Reject>
             <Dropzone.Idle>
-              <IconCloudUpload size={50} stroke={1.5} />
+              <img
+                src={IconCloudUpload}
+                style={{ width: "50px", height: "50px" }}
+              />
             </Dropzone.Idle>
           </Group>
 
@@ -152,6 +166,21 @@ export function FileUpload() {
         </div>
       </Dropzone>
 
+      {/* Render the list of dropped files */}
+      {files.length > 0 && (
+        <div style={{ marginTop: "20px" }}>
+          <Text size="sm" color="dimmed">
+            Files:
+          </Text>
+          <ul>
+            {files.map((file, index) => (
+              <li key={index}>
+                <Text size="sm">{file.name}</Text>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <Button
         className={classes.control}
         size="md"
@@ -164,15 +193,45 @@ export function FileUpload() {
   );
 }
 
-function Submit() {
+function Submit({ onSubmit }: { onSubmit: () => void }) {
   return (
-    <Button variant="filled" color="green" size="md" radius="md">
+    <Button
+      variant="filled"
+      color="green"
+      size="md"
+      radius="md"
+      onClick={onSubmit}
+    >
       Submit
     </Button>
   );
 }
 
 export function Coordinator() {
+  const form = useForm({
+    initialValues: {
+      classDetails: {
+        className: "",
+        classSection: "",
+        maxGroupSize: "",
+      },
+      questionnaire: [{ question: "", key: randomId() }],
+    },
+  });
+
+  const handleSubmit = async () => {
+    // Prepare form data as a JSON object
+    const data = {
+      classDetails: form.values.classDetails,
+      questionnaire: form.values.questionnaire.map((item) => ({
+        question: item.question,
+      })),
+    };
+
+    // Send POST request
+    await createClass(data); // Make sure you implement this in your utils
+  };
+
   return (
     <div>
       <LoggedHeader />
@@ -202,7 +261,7 @@ export function Coordinator() {
         <FileUpload />
       </Box>
       <Group justify="center" pt="xl" pb="lg" pl="sm" pr="sm">
-        <Submit />
+        <Submit onSubmit={handleSubmit} />
       </Group>
     </div>
   );
