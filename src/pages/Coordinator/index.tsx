@@ -56,8 +56,9 @@ export function Coordinator() {
     };
     try {
       const response = await createClass(data);
-      console.log(response)
-      navigate(`/classview/${response.ClassID}`);
+      if (response && response.ClassID) {
+        navigate(`/classview/${response.ClassID}`);
+      }
     } catch (e) {
       console.error(e);
     }

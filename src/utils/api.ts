@@ -13,11 +13,10 @@ export const createClass = async (data: any) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    return await response.json(); // Return the response from the server
+    return await response.json();
   } catch (error) {
     console.error("Error in sending POST request:", error);
-    throw error;
+    return null;
   }
 };
 
@@ -29,9 +28,9 @@ export const fetchClassData = async (id: string) => {
     if (!response.ok) {
       throw new Error(`Failed to fetch class data: ${response.statusText}`);
     }
-    return await response.json(); // Parse and return the JSON response
+    return await response.json();
   } catch (error) {
     console.error("Error fetching class data:", error);
-    throw error; // Re-throw the error for handling in the component
+    return null;
   }
 };
