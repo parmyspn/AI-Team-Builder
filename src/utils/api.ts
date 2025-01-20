@@ -35,3 +35,21 @@ export const fetchClassData = async (id: string) => {
     throw error; // Re-throw the error for handling in the component
   }
 };
+
+
+// FOR Profile
+export async function fetchProfiles() {
+    const response = await fetch("/api/profiles"); // Replace with your API endpoint
+    if (!response.ok) {
+      throw new Error("Failed to fetch profiles");
+    }
+    return await response.json();
+  }
+  
+  export async function fetchUserStatus() {
+    const response = await fetch("/api/profiles"); // Replace with your API endpoint
+    if (!response.ok) {
+      throw new Error("Failed to fetch profiles");
+    }
+    return await response.json();
+  }
