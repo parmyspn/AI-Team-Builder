@@ -844,6 +844,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tabler/icons-react@npm:^3.28.1":
+  version: 3.28.1
+  resolution: "@tabler/icons-react@npm:3.28.1"
+  dependencies:
+    "@tabler/icons": "npm:3.28.1"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 10c0/fe8b7baaae5a2c896c519c509d3c05e83cf4ea0c5b683add200cd2c0587a66a590a3ca26f54e91a8ee2b15c519c0854651c11490c2eab8ef111cee9b8e76b3e3
+  languageName: node
+  linkType: hard
+
+"@tabler/icons@npm:3.28.1":
+  version: 3.28.1
+  resolution: "@tabler/icons@npm:3.28.1"
+  checksum: 10c0/330f738b74d203e910382725f4ff6b9c177f8738a54c71fc6e56c3204cf21749b0512148650ae85c211692c49aa5e03f09f2ea8458688309d917bb65f698dbd0
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -965,6 +983,24 @@ __metadata:
   version: 1.0.6
   resolution: "@types/estree@npm:1.0.6"
   checksum: 10c0/cdfd751f6f9065442cd40957c07fd80361c962869aa853c1c2fd03e101af8b9389d8ff4955a43a6fcfa223dd387a089937f95be0f3eec21ca527039fd2d9859a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:*":
+  version: 22.10.7
+  resolution: "@types/node@npm:22.10.7"
+  dependencies:
+    undici-types: "npm:~6.20.0"
+  checksum: 10c0/c941b4689dfc4044b64a5f601306cbcb0c7210be853ba378a5dd44137898c45accedd796ee002ad9407024cac7ecaf5049304951cb1d80ce3d7cebbbae56f20e
+  languageName: node
+  linkType: hard
+
+"@types/papaparse@npm:^5.3.15":
+  version: 5.3.15
+  resolution: "@types/papaparse@npm:5.3.15"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/9333e980b9ed4102f80b1791b6dfefb23fb4d27252b2b6ee6084b2cd847cbe802cfb838d46b4f6b4cb035f9225e0323034c956ee21bbcbcb4cbdb663302d5eeb
   languageName: node
   linkType: hard
 
@@ -2048,6 +2084,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"papaparse@npm:^5.5.1":
+  version: 5.5.1
+  resolution: "papaparse@npm:5.5.1"
+  checksum: 10c0/32f7b39ef175f9adc8dc5fecddc4b2801a82626149c65463d19cbdcb2e53ce3eb74867c59c50d7169b26082059fad46cef9fbd36178cb7c5c6a714d8c577217d
+  languageName: node
+  linkType: hard
+
 "path-key@npm:^3.1.0":
   version: 3.1.1
   resolution: "path-key@npm:3.1.1"
@@ -2291,20 +2334,20 @@ __metadata:
   linkType: hard
 
 "react-router-dom@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "react-router-dom@npm:7.1.2"
+  version: 7.1.3
+  resolution: "react-router-dom@npm:7.1.3"
   dependencies:
-    react-router: "npm:7.1.2"
+    react-router: "npm:7.1.3"
   peerDependencies:
     react: ">=18"
     react-dom: ">=18"
-  checksum: 10c0/d6570e00011b39f683895fdc0b09d5d8a1d106df565a0fc192388c601020fb630fb6b79630413ab0ae1cec4f92cf75c129b7c9b8b2379ba61c480965c4a1569b
+  checksum: 10c0/84752b90e3f9e9168fc29d7dd5eb0ff622a831de15e4e5d899694f19bc988387d831d180d07f503071d944fa4a666c1d07004e4526268215cc5dbe5bba98f52c
   languageName: node
   linkType: hard
 
-"react-router@npm:7.1.2":
-  version: 7.1.2
-  resolution: "react-router@npm:7.1.2"
+"react-router@npm:7.1.3":
+  version: 7.1.3
+  resolution: "react-router@npm:7.1.3"
   dependencies:
     "@types/cookie": "npm:^0.6.0"
     cookie: "npm:^1.0.1"
@@ -2316,7 +2359,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/f2ef57c8c95cfee0c0689cbcb9a28ebbc5a554831b9e8f9d0295f4c6ac0960a448e16b828dd75168b4e8da228068c99d88248be3418467d6a76ab4ea02bf0d71
+  checksum: 10c0/f42f7b245533d1adaa00779a0287993a836d5b56039d97a6643a8b3a721ffb92ff47c97cfb36409fec8794ac3c8a884339f588cf21fcd7f6dccdfc834520c76f
   languageName: node
   linkType: hard
 
@@ -2770,6 +2813,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~6.20.0":
+  version: 6.20.0
+  resolution: "undici-types@npm:6.20.0"
+  checksum: 10c0/68e659a98898d6a836a9a59e6adf14a5d799707f5ea629433e025ac90d239f75e408e2e5ff086afc3cace26f8b26ee52155293564593fbb4a2f666af57fc59bf
+  languageName: node
+  linkType: hard
+
 "unique-filename@npm:^4.0.0":
   version: 4.0.0
   resolution: "unique-filename@npm:4.0.0"
@@ -2914,11 +2964,14 @@ __metadata:
     "@mantine/modals": "npm:^7.16.0"
     "@mantine/notifications": "npm:^7.16.0"
     "@mantinex/mantine-logo": "npm:^1.1.0"
+    "@tabler/icons-react": "npm:^3.28.1"
+    "@types/papaparse": "npm:^5.3.15"
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"
     "@vitejs/plugin-react": "npm:^4.3.4"
     dayjs: "npm:^1.11.13"
     embla-carousel-react: "npm:^7.1.0"
+    papaparse: "npm:^5.5.1"
     postcss: "npm:^8.5.1"
     postcss-preset-mantine: "npm:^1.17.0"
     postcss-simple-vars: "npm:^7.0.1"
@@ -2928,11 +2981,11 @@ __metadata:
     react-router-dom: "npm:^7.1.2"
     recharts: "npm:^2.15.0"
     typescript: "npm:^5.7.2"
-    vite: "npm:^6.0.1"
+    vite: "npm:^6.0.7"
   languageName: unknown
   linkType: soft
 
-"vite@npm:^6.0.1":
+"vite@npm:^6.0.7":
   version: 6.0.7
   resolution: "vite@npm:6.0.7"
   dependencies:

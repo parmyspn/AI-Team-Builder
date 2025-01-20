@@ -20,6 +20,8 @@ import { AuthProvider } from "./utils/auth";
 import { AuthenticationForm } from "./pages/LoginPage";
 import { HomePage } from "./pages/HomePage";
 import { Coordinator } from "./pages/Coordinator";
+import { ClassView } from "./pages/ClassView";
+// import { UserProfile } from "./pages/UserProfile";
 export default function AllRoutes() {
   return (
     <AuthProvider>
@@ -30,6 +32,9 @@ export default function AllRoutes() {
           <Route path="/login" element={<AuthenticationForm />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/coordinator" element={<Coordinator />} />
+          <Route path="/classview/:id" element={<ClassView />} />
+          {/* <Route path="/userprofile" element={<UserProfile />} /> */}
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

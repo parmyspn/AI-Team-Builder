@@ -1,160 +1,70 @@
+import { useNavigate } from "react-router-dom";
 import { LoggedHeader } from "../../components/LoggedHeader";
 import { useForm } from "@mantine/form";
-import {
-  TextInput,
-  Group,
-  ActionIcon,
-  Box,
-  Text,
-  Button,
-  Fieldset,
-} from "@mantine/core";
+import { useState } from "react";
 import { randomId } from "@mantine/hooks";
-import { IconTrash } from "@tabler/icons-react";
-import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
-import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { Box, Group, Text } from "@mantine/core";
+import { createClass } from "../../utils/api"; // Assuming this function exists in your utils folder.
+import { COORDINATOR_USER_ID } from "../../utils/dummydata";
 
-function Question() {
-  const form = useForm({
-    mode: "uncontrolled",
-    initialValues: {
-      questionnaire: [{ question: "", key: randomId() }],
-    },
-  });
+// Import refactored components
+import { ClassDetailsForm } from "../../components/ClassDetailsForm";
+import { QuestionsInput } from "../../components/QuestionsInput";
+import { FileUpload } from "../../components/FileUpload";
+import { SubmitButton } from "../../components/SubmitButton";  // Assuming Submit component is now a separate file
 
-  const fields = form.getValues().questionnaire.map((item, index) => (
-    <Group
-      key={item.key}
-      mt="xs"
-      align="center"
-      direction="row"
-      position="apart"
-      spacing="md"
-    >
-      <Text size="sm" color="dimmed" ml="xs">
-        {index + 1}
-      </Text>
-      <TextInput
-        placeholder="Enter your question"
-        withAsterisk
-        style={{ flex: 1, maxWidth: "500px" }}
-        key={form.key(`questionnaire.${index}.question`)}
-        {...form.getInputProps(`questionnaire.${index}.question`)}
-      />
-      <ActionIcon
-        color="red"
-        onClick={() => form.removeListItem("questionnaire", index)}
-      >
-        <IconTrash size={16} />
-      </ActionIcon>
-    </Group>
-  ));
 
-  return (
-    <Box maw={500} mx="auto">
-      <Text size="xl" fw={700} mb="md"  pt="xl">
-        Question List
-      </Text>
-
-      {fields.length > 0 ? (
-        <Group mb="xs">
-          <Text fw={500} size="sm" style={{ flex: 1 }}>
-            Question
-          </Text>
-        </Group>
-      ) : (
-        <Text c="dimmed" ta="center">
-          No questions yet...
-        </Text>
-      )}
-
-      {fields}
-
-      <Group justify="center" mt="md">
-        <Button
-          onClick={() =>
-            form.insertListItem("questionnaire", {
-              question: "",
-              key: randomId(),
-            })
-          }
-        >
-          Add Question
-        </Button>
-      </Group>
-    </Box>
-  );
-}
-
-function ClassDetails() {
-  return (
-    <div style={{ maxWidth: "500px", margin: "0 auto" }}>
-      <TextInput label="Class name" placeholder="Class name" mt="md" />
-      <TextInput label="Class section" placeholder="Class section" mt="md" />
-      <TextInput
-        label="Maximum group size"
-        placeholder="Maximum group size"
-        mt="md"
-      />
-    </div>
-  );
-}
-
-export function FileUpload(props: Partial<DropzoneProps>) {
-  return (
-    <Dropzone
-      onDrop={(files) => console.log("accepted files", files)}
-      onReject={(files) => console.log("rejected files", files)}
-      maxSize={5 * 1024 ** 2}
-      accept={IMAGE_MIME_TYPE}
-      {...props}
-    >
-      <Group
-        justify="center"
-        gap="xl"
-        mih={120}
-        style={{ pointerEvents: "none" }}
-      >
-        <Dropzone.Accept>
-          <IconUpload
-            size={52}
-            color="var(--mantine-color-blue-6)"
-            stroke={1.5}
-          />
-        </Dropzone.Accept>
-        <Dropzone.Reject>
-          <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
-        </Dropzone.Reject>
-        <Dropzone.Idle>
-          <IconPhoto
-            size={52}
-            color="var(--mantine-color-dimmed)"
-            stroke={1.5}
-          />
-        </Dropzone.Idle>
-
-        <div>
-          <Text size="xl" inline>
-            Drag images here or click to select files
-          </Text>
-          <Text size="sm" c="dimmed" inline mt={7}>
-            Attach as many files as you like, each file should not exceed 5mb
-          </Text>
-        </div>
-      </Group>
-    </Dropzone>
-  );
-}
-
-function Submit() {
-  return (
-    <Button variant="filled" color="green" size="md" radius="md">
-      Submit
-    </Button>
-  );
-}
 
 export function Coordinator() {
+  const navigate = useNavigate();
+  
+  const [files, setFiles] = useState<File[]>([]);
+  const [classDetails, setClassDetails] = useState({
+    ClassName: "",
+    ClassSection: "",
+    CoordinatorID: COORDINATOR_USER_ID,
+    MaxTeamSize: 4,
+    Organization: "UBC",
+    RankingDuration: 60,
+    RankingStartTime: Math.floor(new Date('2025-09-06T00:00:00Z').getTime() / 1000)
+    ,
+  });
+  const [questionnaire, setQuestionnaire] = useState<any[]>([]);
+
+  const handleClassDetailsChange = (value: string | number, field: string) => {
+    setClassDetails((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleQuestionnaireChange = (updatedQuestions: { question: string; key: string }[]) => {
+    setQuestionnaire(updatedQuestions);
+  };
+
+  const handleFileChange = (newFiles: File[]) => {
+    setFiles(newFiles);
+  };
+
+  const handleSubmit = async () => {
+    const data = {
+      ...classDetails,
+      Questions: questionnaire.reduce((acc, item) => {
+        acc[item.key] = item.question;
+        return acc;
+      }, {}),
+    };
+    try {
+      const response = await createClass(data);
+      if (response && response.ClassID) {
+        navigate(`/classview/${response.ClassID}`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+  };
+
   return (
     <div>
       <LoggedHeader />
@@ -163,15 +73,17 @@ export function Coordinator() {
           Class Details
         </Text>
       </Box>
-      <ClassDetails />
-      <Question />
+      <ClassDetailsForm
+        classDetails={classDetails}
+        onChange={handleClassDetailsChange}
+      />
+      <QuestionsInput
+        questionnaire={questionnaire}
+        onChange={handleQuestionnaireChange}
+      />
       <Box maw={500} mx="auto" mt="xl">
         <Text size="xl" fw={700} mb="md">
           Upload Your Class List (Excel, CSV,...)
-        </Text>
-        <Text size="sm" c="dimmed" mb="lg">
-          Please upload images that are related to your questionnaire or any
-          other relevant content.
         </Text>
       </Box>
       <Box
@@ -185,10 +97,10 @@ export function Coordinator() {
           backgroundColor: "#fafafa",
         }}
       >
-        <FileUpload />
+        <FileUpload files={files} onFileChange={handleFileChange} />
       </Box>
       <Group justify="center" pt="xl" pb="lg" pl="sm" pr="sm">
-        <Submit />
+        <SubmitButton onSubmit={handleSubmit} />
       </Group>
     </div>
   );
