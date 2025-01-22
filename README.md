@@ -1,4 +1,4 @@
-# ???? Team Builder
+# Smart Team Builder
 
 Base code from Mantine Vite template
 [Documentation](https://mantine.dev/guides/vite/)
